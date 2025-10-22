@@ -23,10 +23,10 @@ struct CurrentDayView: View {
                 CalendarView()
                 
                 LearningSwiftView
-                    .padding(.top,20)
-                        
-            Spacer()
+                    .padding(.vertical,-206)
                 
+                LearneButtonView
+ 
             }
         }
     }
@@ -86,12 +86,18 @@ struct CurrentDayView: View {
     //Learning Swift View
 
     var LearningSwiftView: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 10) {
+            
+            Rectangle()
+                .frame(width:332 ,height: 1)
+                .foregroundColor(.black02)
+            
             Text("Learning Swift")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 48)
+            
             
             HStack(spacing: 13) {
                 // Days Learned
@@ -118,8 +124,10 @@ struct CurrentDayView: View {
                     }
                 }
                 
+                
                 // Day Freezed
                 ZStack {
+                    
                     Rectangle()
                         .fill(Color.darkBlue01)
                         .frame(width: 160, height: 69)
@@ -144,10 +152,54 @@ struct CurrentDayView: View {
             }
             .padding(.horizontal, 40)
         }
-        .padding(.top, 30)
-        .padding(.bottom, 20)
+        .padding(.vertical,60)
+        
     }
-}
+        
+    var LearneButtonView: some View {
+        VStack (spacing: 30){
+            ZStack {
+                Button (action:{
+                    print("Log as Learned")
+                })
+                {
+                    Text("Log as \n Learned")
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 274, height: 274)
+                    
+                }
+                .buttonStyle(.glassProminent)
+                .glassEffect(.clear)
+                .tint(.orgMain)
+             }
+
+ 
+            ZStack {
+                Button (action:{
+                    print("Log as Freezed")
+                })
+                {
+                    Text("Log as Freezed")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(.white)
+                        .frame(width: 274, height: 48)
+ 
+                }
+                .buttonStyle(.glassProminent)
+                .tint(.bluee)
+            }
+            
+             Text ("1 out of 2 Freezes used ")
+                .font(.system(size: 14, weight: .regular))
+                .foregroundStyle(Color.black04)
+                .padding(.vertical, -17)
+
+        }
+    }
+        
+     }
+
 
          
 #Preview {

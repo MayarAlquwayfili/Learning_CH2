@@ -17,14 +17,15 @@ struct CalendarView: View {
     var body: some View {
          
             VStack(spacing: 0) {
-                 headerView
                 
                  ZStack {
                     Rectangle()
                         .frame(width: 365, height: 254)
                         .foregroundStyle(Color.black01)
                         .cornerRadius(13)
-                    
+                        .padding(.vertical)
+                     headerView
+ 
                      weeklyGridView
                          .padding(.horizontal)
                 }
@@ -78,21 +79,23 @@ struct CalendarView: View {
             }
             .padding(.horizontal, 40)
         }
-        .padding(.top, 20)
-        .padding(.bottom, 30)
+        .padding(.bottom, 200)
     }
     
     private var weeklyGridView: some View {
-        VStack(spacing: 16) {
-             HStack(spacing: 17) {
+        VStack(spacing: -1) {
+             HStack {
                 ForEach(weekDays, id: \.self) { day in
                     Text(day)
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.black02)
-                        .frame(maxWidth: .infinity)
+ 
                 }
-            }
-            .padding(.bottom, 4)
+                .padding(.horizontal, 6)
+
+             }
+             .padding(.vertical, -20)
+
             
              HStack(spacing: 17) {
                 ForEach(getCurrentWeekRealDays(), id: \.self) { dayInfo in
@@ -105,12 +108,12 @@ struct CalendarView: View {
                             .font(.system(size: 24, weight: .medium))
                             .foregroundColor(.white)
                     }
+                    .padding(.horizontal, -7)
                  }
             }
-             .padding(.horizontal, -10)
-
+ 
         }
-        .padding(.horizontal)
+        .padding(.bottom, 55)
 
     }
     
