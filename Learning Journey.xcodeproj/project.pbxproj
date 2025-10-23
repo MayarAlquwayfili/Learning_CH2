@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2EBB5F462EAA427C000EF24D /* KVKCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 2EBB5F452EAA427C000EF24D /* KVKCalendar */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		2EDC19A42EA502910001F3C6 /* Learning Journey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Learning Journey.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EBB5F462EAA427C000EF24D /* KVKCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "Learning Journey";
 			packageProductDependencies = (
+				2EBB5F452EAA427C000EF24D /* KVKCalendar */,
 			);
 			productName = "Learning Journey";
 			productReference = 2EDC19A42EA502910001F3C6 /* Learning Journey.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 2EDC199B2EA502910001F3C6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2EDC19A52EA502910001F3C6 /* Products */;
 			projectDirPath = "";
@@ -328,6 +337,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kvyatkovskys/KVKCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.29;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2EBB5F452EAA427C000EF24D /* KVKCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */;
+			productName = KVKCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2EDC199C2EA502910001F3C6 /* Project object */;
 }

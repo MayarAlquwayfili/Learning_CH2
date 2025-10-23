@@ -9,7 +9,9 @@ import SwiftUI
 
 
 struct CurrentDayView: View {
-    
+    @State private var showFullCalendar = false
+    @StateObject private var viewModel = StreakViewModel()
+
     var body: some View {
         ZStack {
             Color.black
@@ -26,11 +28,11 @@ struct CurrentDayView: View {
                     .padding(.vertical,-206)
                 
                 LearneButtonView
- 
+                
             }
         }
+        
     }
-    
     
     //Header View
     
@@ -45,9 +47,8 @@ struct CurrentDayView: View {
             
             
             HStack (spacing: 12){
-                
-                Button (action:{
-                    print("Calendar")
+                        Button (action:{
+                             showFullCalendar = true
                 }
                         
                 ) {
@@ -92,11 +93,11 @@ struct CurrentDayView: View {
                 .frame(width:332 ,height: 1)
                 .foregroundColor(.black02)
             
-            Text("Learning Swift")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(Color.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 48)
+            Text("Learning \(viewModel.learningGoal)")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Color.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 48)
             
             
             HStack(spacing: 13) {
@@ -113,11 +114,10 @@ struct CurrentDayView: View {
                             .font(.system(size: 15, weight: .bold))
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("3")
-                                .font(.system(size: 24, weight: .semibold))
+                            Text("\(viewModel.streakData.totalLearnedDays)")                                .font(.system(size: 24, weight: .semibold))
                                 .foregroundStyle(Color.white)
                             
-                            Text("Days Learned")
+                            Text(viewModel.daysLearnedText)
                                 .font(.system(size: 12, weight: .regular))
                                 .foregroundStyle(Color.white)
                         }
@@ -139,13 +139,13 @@ struct CurrentDayView: View {
                             .font(.system(size: 15, weight: .bold))
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("1")
-                                .font(.system(size: 24, weight: .semibold))
+                            Text("\(viewModel.streakData.freezesUsed)")                                .font(.system(size: 24, weight: .semibold))
                                 .foregroundStyle(Color.white)
                             
-                            Text("Day Freezed")
+                            Text(viewModel.daysFreezedText)
                                 .font(.system(size: 12, weight: .regular))
                                 .foregroundStyle(Color.white)
+                             
                         }
                     }
                 }
@@ -158,26 +158,31 @@ struct CurrentDayView: View {
         
     var LearneButtonView: some View {
         VStack (spacing: 30){
+            
+            // Log as Learned Button
             ZStack {
                 Button (action:{
-                    print("Log as Learned")
+                    viewModel.logAsLearned()
                 })
                 {
-                    Text("Log as \n Learned")
+                    Text(viewModel.learnedButtonText)
                         .font(.system(size: 36, weight: .bold))
                         .foregroundColor(.white)
                         .frame(width: 274, height: 274)
+                        .multilineTextAlignment(.center)
+
                     
                 }
                 .buttonStyle(.glassProminent)
                 .glassEffect(.clear)
-                .tint(.orgMain)
+                .tint(viewModel.learnedButtonColor)
+                .disabled(!viewModel.canLogAsLearned())
              }
 
- 
-            ZStack {
+            // Log as Freezed Button
+             ZStack {
                 Button (action:{
-                    print("Log as Freezed")
+                    viewModel.logAsFreezed()
                 })
                 {
                     Text("Log as Freezed")
@@ -187,10 +192,11 @@ struct CurrentDayView: View {
  
                 }
                 .buttonStyle(.glassProminent)
-                .tint(.bluee)
-            }
-            
-             Text ("1 out of 2 Freezes used ")
+                .tint(viewModel.freezedButtonColor)
+                .disabled(!viewModel.freezedButtonEnabled)
+             }
+ 
+            Text(viewModel.freezeCounterText)
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(Color.black04)
                 .padding(.vertical, -17)
