@@ -6,33 +6,61 @@
 //
 
 import SwiftUI
-
-
+ 
 struct CurrentDayView: View {
     @State private var showFullCalendar = false
-    @StateObject private var viewModel = StreakViewModel()
-
+    @State private var showMonthYearPicker = false
+    @ObservedObject var viewModel: StreakViewModel
+    @Environment(\.dismiss) var dismiss
+    @State private var isGoalCompleted = false
+    @State private var showUpdateGoalSheet = false
+    
     var body: some View {
         ZStack {
-            Color.black
-                .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 headerView
                     .padding(.top,40)
                     .padding(.horizontal,40)
                 
-                CalendarView()
+                CalendarView(viewModel: viewModel, showMonthYearPicker: $showMonthYearPicker)
                 
-                LearningSwiftView
-                    .padding(.vertical,-206)
+                if !isGoalCompleted && !showMonthYearPicker {
+                    LearningSwiftView
+                        .padding(.vertical,-206)
+                        .transition(.opacity)
+                } else if showMonthYearPicker {
+                    Spacer()
+                }
                 
-                LearneButtonView
+                if isGoalCompleted {
+                    GoalCompletedView(
+                        onSetNewGoal: { dismiss() },
+                        onRestartGoal: {
+                            viewModel.startNewGoalCycle()
+                            isGoalCompleted = false
+                        }
+                    )
+                    Spacer().frame(height: 50)
+                } else {
+                    LearneButtonView
+                        .transition(.opacity)
+                }
                 
             }
         }
-        
+        .fullScreenCover(isPresented: $showFullCalendar) {
+            FullCalendarView(viewModel: viewModel)
+        }
+        .animation(.easeInOut(duration: 0.3), value: showMonthYearPicker)
+        .animation(.easeInOut, value: isGoalCompleted)
+        .sheet(isPresented: $showUpdateGoalSheet) {
+            UpdateGoalView(viewModel: viewModel)
+        }
+        .onAppear {
+        }
     }
+    
     
     //Header View
     
@@ -45,10 +73,9 @@ struct CurrentDayView: View {
             
             Spacer()
             
-            
             HStack (spacing: 12){
-                        Button (action:{
-                             showFullCalendar = true
+                Button (action:{
+                    showFullCalendar = true
                 }
                         
                 ) {
@@ -63,7 +90,7 @@ struct CurrentDayView: View {
                 .tint(.black03)
                 
                 Button (action:{
-                    print("Calendar")
+                    showUpdateGoalSheet = true
                 }
                         
                 ) {
@@ -85,7 +112,7 @@ struct CurrentDayView: View {
     
     
     //Learning Swift View
-
+    
     var LearningSwiftView: some View {
         VStack(spacing: 10) {
             
@@ -94,13 +121,14 @@ struct CurrentDayView: View {
                 .foregroundColor(.black02)
             
             Text("Learning \(viewModel.learningGoal)")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(Color.white)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 48)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Color.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 48)
             
             
             HStack(spacing: 13) {
+                
                 // Days Learned
                 ZStack {
                     Rectangle()
@@ -145,7 +173,7 @@ struct CurrentDayView: View {
                             Text(viewModel.daysFreezedText)
                                 .font(.system(size: 12, weight: .regular))
                                 .foregroundStyle(Color.white)
-                             
+                            
                         }
                     }
                 }
@@ -155,7 +183,7 @@ struct CurrentDayView: View {
         .padding(.vertical,60)
         
     }
-        
+    
     var LearneButtonView: some View {
         VStack (spacing: 30){
             
@@ -167,20 +195,18 @@ struct CurrentDayView: View {
                 {
                     Text(viewModel.learnedButtonText)
                         .font(.system(size: 36, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundColor(viewModel.learnedButtonTextColor)
                         .frame(width: 274, height: 274)
                         .multilineTextAlignment(.center)
-
-                    
                 }
                 .buttonStyle(.glassProminent)
                 .glassEffect(.clear)
                 .tint(viewModel.learnedButtonColor)
                 .disabled(!viewModel.canLogAsLearned())
-             }
-
+            }
+            
             // Log as Freezed Button
-             ZStack {
+            ZStack {
                 Button (action:{
                     viewModel.logAsFreezed()
                 })
@@ -189,25 +215,26 @@ struct CurrentDayView: View {
                         .font(.system(size: 17, weight: .medium))
                         .foregroundColor(.white)
                         .frame(width: 274, height: 48)
- 
+                    
                 }
                 .buttonStyle(.glassProminent)
                 .tint(viewModel.freezedButtonColor)
                 .disabled(!viewModel.freezedButtonEnabled)
-             }
- 
+            }
+            
             Text(viewModel.freezeCounterText)
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(Color.black04)
                 .padding(.vertical, -17)
-
+            
         }
     }
-        
-     }
+}
 
 
-         
+
 #Preview {
-    CurrentDayView()
+    CalendarView(
+            viewModel: StreakViewModel(),
+            showMonthYearPicker: .constant(false))
 }

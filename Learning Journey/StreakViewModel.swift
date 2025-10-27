@@ -45,41 +45,57 @@ class StreakViewModel: ObservableObject {
         checkStreakReset()
         updateTodayState()
     }
+     
+        var learnedButtonTextColor: Color {
+            switch todayState {
+            case .learned:
+                return .orgMain
+            case .freezed:
+                return .bluee
+            case .default:
+                return .white
+            }
+        }
     
-    // MARK: - Public Methods
+    
+    
+    
     
     func logAsLearned() {
-        guard canLogAsLearned() else { return }
-        
-        todayState = .learned
-        streakData.totalLearnedDays += 1
-        streakData.currentStreak += 1
-        streakData.lastLearningDate = Date()
-        
-        saveData()
-    }
+            guard canLogAsLearned() else { return }
+            
+            todayState = .learned
+            streakData.totalLearnedDays += 1
+            streakData.currentStreak += 1
+            streakData.lastLearningDate = Date()
+            
+            updateHistory(for: Date(), with: .learned)  
+            
+            saveData()
+        }
     
     func logAsFreezed() {
-        guard canLogAsFreezed() else { return }
-        
-        todayState = .freezed
-        streakData.freezesUsed += 1
-        streakData.currentStreak += 1
-        streakData.lastLearningDate = Date() // ⬅️ أضفنا حفظ التاريخ هنا أيضاً
-        
-        saveData()
-    }
+            guard canLogAsFreezed() else { return }
+            
+            todayState = .freezed
+            streakData.freezesUsed += 1
+            streakData.currentStreak += 1
+            streakData.lastLearningDate = Date()
+            
+            updateHistory(for: Date(), with: .freezed) // ⬅️ السطر المضاف
+            
+            saveData()
+        }
     
     func canLogAsLearned() -> Bool {
-        if todayState != .default { return false }
-        return isNewDay()
-    }
-    
-    func canLogAsFreezed() -> Bool {
-        if todayState != .default { return false }
-        if streakData.freezesUsed >= streakData.totalFreezes { return false }
-        return isNewDay()
-    }
+             return todayState == .default
+        }
+        
+        func canLogAsFreezed() -> Bool {
+            if todayState != .default { return false }
+            if streakData.freezesUsed >= streakData.totalFreezes { return false }
+             return true
+        }
     
     func updateDuration(_ duration: LearningDuration) {
         selectedDuration = duration
@@ -93,17 +109,31 @@ class StreakViewModel: ObservableObject {
         saveData()
     }
     
-    // MARK: - دالة حفظ عامة جديدة
+ 
     func saveDataPublic() {
         saveData()
     }
     
     var learnedButtonColor: Color {
-        todayState == .learned ? .brownn : .orgMain
+        switch todayState {
+        case .learned:
+            return .brownn
+        case .freezed:
+            return .darkBlue01
+        case .default:
+            return .orgMain 
+        }
     }
     
     var learnedButtonText: String {
-        todayState == .learned ? "Learned \n Today" : "Log as\nLearned"
+        switch todayState {
+        case .learned:
+            return "Learned\nToday"
+        case .freezed:
+            return "Day\nFreezed" 
+        case .default:
+            return "Log as\nLearned"
+        }
     }
     
     var freezedButtonEnabled: Bool {
@@ -111,7 +141,7 @@ class StreakViewModel: ObservableObject {
     }
     
     var freezedButtonColor: Color {
-        freezedButtonEnabled ? .blue : .darkBlue01
+        freezedButtonEnabled ? .bluee : .darkBlue01
     }
     
     var freezeCounterText: String {
@@ -125,8 +155,9 @@ class StreakViewModel: ObservableObject {
     var daysFreezedText: String {
         "\(streakData.freezesUsed) Day\(streakData.freezesUsed == 1 ? "" : "s") Freezed"
     }
+     
     
-    // MARK: - Private Methods
+    
     
     private func isNewDay() -> Bool {
         guard let lastDate = streakData.lastLearningDate else { return true }
@@ -148,13 +179,19 @@ class StreakViewModel: ObservableObject {
     }
     
     private func resetStreak() {
-        streakData.currentStreak = 0
-        saveData()
-    }
+            streakData.currentStreak = 0
+            streakData.history.removeAll()
+            streakData.totalLearnedDays = 0
+            streakData.freezesUsed = 0
+            streakData.lastLearningDate = nil
+            updateTodayState()
+             saveData()
+        }
     
     private func updateTodayState() {
-        todayState = .default
-    }
+            // تحقق مما إذا كان اليوم الحالي مسجلاً في التاريخ
+            self.todayState = getDayState(for: Date())
+        }
     
     private func saveData() {
         let encoder = JSONEncoder()
@@ -181,6 +218,26 @@ class StreakViewModel: ObservableObject {
             streakData.totalFreezes = duration.freezesAllowed
         }
     }
+     
+        func startNewGoalCycle() {
+            streakData.currentStreak = 0
+            streakData.totalLearnedDays = 0
+             streakData.lastLearningDate = nil
+            updateTodayState()
+            saveData()  
+            print("Starting new goal cycle with same goal: \(learningGoal)")
+        }
+    
+    private func updateHistory(for date: Date, with state: DayState) {
+            let startOfDay = calendar.startOfDay(for: date)
+            
+             if let index = streakData.history.firstIndex(where: { calendar.isDate($0.date, inSameDayAs: startOfDay) }) {
+                 streakData.history[index].state = state
+            } else {
+                 let newDay = LearningDay(date: startOfDay, state: state)
+                streakData.history.append(newDay)
+            }
+        }
 }
 
 
@@ -188,21 +245,13 @@ class StreakViewModel: ObservableObject {
 // CalendarView
 
 extension StreakViewModel {
-    func getDayState(for date: Date) -> DayState {
-        let calendar = Calendar.current
-        
-        if calendar.isDateInToday(date) {
-            return todayState
+ 
+        func getDayState(for date: Date) -> DayState {
+             if let day = streakData.history.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
+                 return day.state
+            }
+              return .default
         }
-        
-        // التحقق من الأيام السابقة
-        if let lastDate = streakData.lastLearningDate,
-           calendar.isDate(date, inSameDayAs: lastDate) {
-            return .learned
-        }
-        
-        return .default
-    }
     
     func markDayAsLearned(date: Date) {
         let calendar = Calendar.current

@@ -1,13 +1,13 @@
 {
-  "originHash" : "c421a2b04bac121199efe7ac740a39f67de904f3a6d3a7ed2cf8fb90152c2788",
+  "originHash" : "2210fcafa6e02a3f16f3c2d3cc45e0b8bfbabcff7a5be6325d5d2194bc31f854",
   "pins" : [
     {
-      "identity" : "kvkcalendar",
+      "identity" : "fscalendar",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kvyatkovskys/KVKCalendar",
+      "location" : "https://github.com/WenchaoD/FSCalendar.git",
       "state" : {
-        "revision" : "fbd59e96585c9131c73f1a192b774c0ed9490f45",
-        "version" : "0.6.29"
+        "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
+        "version" : "2.8.4"
       }
     }
   ],

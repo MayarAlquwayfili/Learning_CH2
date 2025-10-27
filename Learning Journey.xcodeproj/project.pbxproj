@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2EBB5F462EAA427C000EF24D /* KVKCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 2EBB5F452EAA427C000EF24D /* KVKCalendar */; };
+		2E6B5BEA2EAA5AF3000530D0 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 2E6B5BE92EAA5AF3000530D0 /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2EDC19A42EA502910001F3C6 /* Learning Journey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Learning Journey.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E476D5F2EAA5D3A006597C1 /* Learning Journey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Learning Journey.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2EBB5F462EAA427C000EF24D /* KVKCalendar in Frameworks */,
+				2E6B5BEA2EAA5AF3000530D0 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,16 +38,8 @@
 			isa = PBXGroup;
 			children = (
 				2EDC19A62EA502910001F3C6 /* Learning Journey */,
-				2EDC19A52EA502910001F3C6 /* Products */,
+				2E476D5F2EAA5D3A006597C1 /* Learning Journey.app */,
 			);
-			sourceTree = "<group>";
-		};
-		2EDC19A52EA502910001F3C6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2EDC19A42EA502910001F3C6 /* Learning Journey.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,10 +62,10 @@
 			);
 			name = "Learning Journey";
 			packageProductDependencies = (
-				2EBB5F452EAA427C000EF24D /* KVKCalendar */,
+				2E6B5BE92EAA5AF3000530D0 /* FSCalendar */,
 			);
 			productName = "Learning Journey";
-			productReference = 2EDC19A42EA502910001F3C6 /* Learning Journey.app */;
+			productReference = 2E476D5F2EAA5D3A006597C1 /* Learning Journey.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -101,10 +93,10 @@
 			mainGroup = 2EDC199B2EA502910001F3C6;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */,
+				2E6B5BE82EAA5AF3000530D0 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 2EDC19A52EA502910001F3C6 /* Products */;
+			productRefGroup = 2EDC199B2EA502910001F3C6;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -339,21 +331,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */ = {
+		2E6B5BE82EAA5AF3000530D0 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kvyatkovskys/KVKCalendar";
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.29;
+				minimumVersion = 2.8.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2EBB5F452EAA427C000EF24D /* KVKCalendar */ = {
+		2E6B5BE92EAA5AF3000530D0 /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2EBB5F442EAA427C000EF24D /* XCRemoteSwiftPackageReference "KVKCalendar" */;
-			productName = KVKCalendar;
+			package = 2E6B5BE82EAA5AF3000530D0 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

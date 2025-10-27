@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @StateObject private var viewModel = StreakViewModel()
+    @ObservedObject var viewModel: StreakViewModel
+    @Binding var showMonthYearPicker: Bool
     @State private var currentDate = Date()
     @State private var showFullCalendar = false
     private let weekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
@@ -25,29 +26,98 @@ struct CalendarView: View {
                     .padding(.vertical)
                 headerView
                 
-                weeklyGridView
-                    .padding(.horizontal)
+                if showMonthYearPicker {
+                    MonthYearPicker(currentDate: $currentDate)
+                        .padding(.top, 40)
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                } else {
+                    weeklyGridView
+                        .padding(.horizontal)
+                        .transition(.opacity.combined(with: .scale(scale: 1.0)))
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
         }
     }
     
+    struct MonthYearPicker: View {
+        @Binding var currentDate: Date
+        
+        @State private var selectedMonth: Int
+        @State private var selectedYear: Int
+        
+        private let calendar = Calendar.current
+        private let months = Calendar.current.monthSymbols
+        private let years: [Int] = Array(2010...2030)
+        
+        init(currentDate: Binding<Date>) {
+            self._currentDate = currentDate
+            let components = Calendar.current.dateComponents([.month, .year], from: currentDate.wrappedValue)
+ 
+            self._selectedMonth = State(initialValue: components.month ?? 1)
+            self._selectedYear = State(initialValue: components.year ?? 2025)
+        }
+        
+        var body: some View {
+            HStack(spacing: 0) {
+
+                Picker("Month", selection: $selectedMonth) {
+                    ForEach(1...12, id: \.self) { month in
+                        Text(months[month - 1]).tag(month)
+                            .foregroundColor(.white)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 180)
+ 
+
+                Picker("Year", selection: $selectedYear) {
+                    ForEach(years, id: \.self) { year in
+                        Text(String(year)).tag(year)
+                            .foregroundColor(.white)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 120)
+                .clipped()
+            }
+            .frame(height: 180)
+            .onChange(of: selectedMonth) { updateDate() }
+            .onChange(of: selectedYear) { updateDate() }
+        }
+        
+        func updateDate() {
+            var components = calendar.dateComponents([.day, .hour, .minute], from: currentDate)
+            components.month = selectedMonth
+            components.year = selectedYear
+            
+             if let newDate = calendar.date(from: components) {
+                currentDate = newDate
+            }
+        }
+    }
+    
+    
+    
+    
+    //Header
+    
     private var headerView: some View {
-        VStack(spacing: 16) {
-            HStack {
-                Spacer()
-                
-                HStack(spacing: 5) {
-                    Button(action: {
-                        showFullCalendar.toggle()
+            VStack(spacing: 16) {
+                HStack {
+ 
+                     Button(action: {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showMonthYearPicker.toggle()
+                        }
                     }) {
                         HStack(spacing: 5) {
                             Text(getCurrentMonthYear())
                                 .font(.system(size: 17, weight: .semibold))
                                 .foregroundColor(.white)
                             
-                            Image(systemName: "chevron.right")
+                             Image(systemName: showMonthYearPicker ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 13, weight: .bold))
                                 .foregroundColor(.orgMain)
                         }
@@ -55,34 +125,35 @@ struct CalendarView: View {
                     
                     Spacer()
                     
-                    HStack(spacing: 16) {
-                        Button(action: {
-                            goToPreviousWeek()
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.orgMain)
-                        }
-                        
-                        Button(action: {
-                            goToNextWeek()
-                        }) {
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.orgMain)
+                     if !showMonthYearPicker {
+                        HStack(spacing: 16) {
+                            Button(action: {
+                                goToPreviousWeek()
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.orgMain)
+                            }
+                            
+                            Button(action: {
+                                goToNextWeek()
+                            }) {
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.orgMain)
+                            }
                         }
                     }
                 }
+                .padding(.horizontal, 40)
             }
-            .padding(.horizontal, 40)
+            .padding(.bottom, 200)
         }
-        .padding(.bottom, 200)
-    }
+    
     
     private var weeklyGridView: some View {
         VStack(spacing: -1) {
-            // أيام الأسبوع
-            HStack {
+             HStack {
                 ForEach(weekDays, id: \.self) { day in
                     Text(day)
                         .font(.system(size: 13, weight: .semibold))
@@ -92,17 +163,14 @@ struct CalendarView: View {
             }
             .padding(.vertical, -20)
             
-            // الأرقام مع الدوائر - الدوائر مو أزرار
-            HStack(spacing: 17) {
+             HStack(spacing: 17) {
                 ForEach(getCurrentWeekRealDays(), id: \.self) { dayInfo in
                     ZStack {
-                        // الدائرة الكبيرة - مجرد شكل مو زر
-                        Circle()
+                         Circle()
                             .fill(getCircleColor(for: dayInfo))
                             .frame(width: 44, height: 44)
                         
-                        // الرقم
-                        Text(dayInfo.day)
+                         Text(dayInfo.day)
                             .font(.system(size: 24, weight: .medium))
                             .foregroundColor(getTextColor(for: dayInfo))
                     }
@@ -113,32 +181,26 @@ struct CalendarView: View {
         .padding(.bottom, 55)
     }
     
-    // MARK: - Helper Functions
+ 
+    
     
     private func getCircleColor(for dayInfo: DayInfo) -> Color {
-        let dayState = viewModel.getDayState(for: dayInfo.date)
-        
-        switch dayState {
-        case .learned:
-            return .brownn // دائرة برتقالية فاتحة
-        case .freezed:
-            return .darkBlue01 // دائرة زرقاء فاتحة
-        case .default:
-            return dayInfo.isToday ? Color.orgMain : .clear // اليوم الحالي برتقالي، الباقي شفاف
+            let dayState = viewModel.getDayState(for: dayInfo.date)
+             
+            if dayState == .default {
+                return dayInfo.isToday ? Color.orgMain : .clear
+            }
+             return dayState.circleSwiftUIColor
         }
-    }
-    
+ 
     private func getTextColor(for dayInfo: DayInfo) -> Color {
-        let dayState = viewModel.getDayState(for: dayInfo.date)
-        
-        // إذا كان learned أو freezed، الرقم يكون أبيض
-        if dayState != .default {
-            return .white
-        } else {
-            // إذا كان default، الرقم يكون أبيض (مع دائرة شفافة) أو أبيض (مع دائرة برتقالية لليوم الحالي)
-            return .white
+            let dayState = viewModel.getDayState(for: dayInfo.date)
+             
+            if dayState == .default {
+                return .white
+            }
+            return dayState.textSwiftUIColor
         }
-    }
     
     private func getCurrentMonthYear() -> String {
         let formatter = DateFormatter()
@@ -186,5 +248,5 @@ struct DayInfo: Hashable {
 }
 
 #Preview {
-    CalendarView()
+    CalendarView(viewModel: StreakViewModel(), showMonthYearPicker: .constant(false))
 }

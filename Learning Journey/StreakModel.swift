@@ -4,7 +4,8 @@
 //
 //  Created by yumii on 22/10/2025.
 //
-
+import SwiftUI
+import UIKit
 import Foundation
 
 struct LearningDay: Identifiable, Codable {
@@ -17,6 +18,40 @@ enum DayState: String, Codable {
     case `default`
     case learned
     case freezed
+    
+  
+    var circleSwiftUIColor: Color {
+        switch self {
+        case .learned: return .brownn
+        case .freezed: return .darkBlue01
+        case .default: return .clear
+        }
+    }
+     
+    var circleUIColor: UIColor {
+        switch self {
+        case .learned: return UIColor(named: "brownn") ?? .brown
+        case .freezed: return UIColor(named: "DarkBlue01") ?? .blue
+        case .default: return .clear
+        }
+    }
+    
+    
+    var textSwiftUIColor: Color {
+        switch self {
+        case .learned: return .orgMain
+        case .freezed: return .bluee  
+        case .default: return .white
+        }
+    }
+    
+     var textUIColor: UIColor {
+        switch self {
+        case .learned: return UIColor(named: "orgMain") ?? .orange
+        case .freezed: return UIColor(named: "bluee") ?? .blue
+        case .default: return .white
+        }
+    }
 }
 
 struct StreakData: Codable {
@@ -25,6 +60,7 @@ struct StreakData: Codable {
     var freezesUsed: Int
     var totalFreezes: Int
     var lastLearningDate: Date?
+    var history: [LearningDay] = []  
 }
 
 struct FreezePolicy: Codable {
