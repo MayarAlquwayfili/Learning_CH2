@@ -17,7 +17,6 @@ struct CurrentDayView: View {
     
     var body: some View {
         ZStack {
-            
             VStack(spacing: 0) {
                 headerView
                     .padding(.top,40)
@@ -30,8 +29,7 @@ struct CurrentDayView: View {
                         .padding(.vertical,-206)
                         .transition(.opacity)
                 } else if showMonthYearPicker {
-                    Spacer()
-                        .frame(height: 100)
+                 
                 }
                 
                 if isGoalCompleted {
@@ -122,6 +120,7 @@ struct CurrentDayView: View {
             Rectangle()
                 .frame(width:332 ,height: 1)
                 .foregroundColor(.black02)
+                .padding(.top,10)
             
             Text("Learning \(viewModel.learningGoal)")
                 .font(.system(size: 16, weight: .semibold))
@@ -158,7 +157,6 @@ struct CurrentDayView: View {
                 
                 // Day Freezed
                 ZStack {
-                    
                     Rectangle()
                         .fill(Color.darkBlue01)
                         .frame(width: 160, height: 69)
@@ -237,7 +235,5 @@ struct CurrentDayView: View {
 
 
 #Preview {
-    CalendarView(
-            viewModel: StreakViewModel(),
-            showMonthYearPicker: .constant(false))
+    CurrentDayView(viewModel: StreakViewModel())
   }

@@ -37,7 +37,7 @@ struct UpdateGoalView: View {
                                 .tint(.orgMain)
 
                             Rectangle()
-                                .frame(height: 1)
+                                .frame(width: 380, height: 1)
                                 .foregroundColor(.black02)
                         }
 
@@ -61,7 +61,7 @@ struct UpdateGoalView: View {
                         
                         Spacer()
                     }
-                    .padding(.leading, 20)
+                    .padding(.horizontal, 20)
                     .padding(.top, 30)
 
                      if showUpdateConfirmAlert {
@@ -77,9 +77,11 @@ struct UpdateGoalView: View {
                                  dismiss()
                             }
                         )
-                        .frame(width: 300, height: 184)
-                        .background(Color.black01)
-                        .cornerRadius(20)
+                        .frame(width: 300, height: 190)
+                        .background(Color.black)
+                        .cornerRadius(35)
+                        .shadow(color: .white.opacity(0.4), radius: 10)
+                        .padding(.vertical)
                     }
                 }
                 .navigationTitle("Learning Goal")
@@ -104,7 +106,8 @@ struct UpdateGoalView: View {
                         .tint(.orgMain)
                          }
                     }
-                }
+                    .background(.black)
+                 }
                  .animation(.easeInOut, value: showUpdateConfirmAlert)
             }
         }

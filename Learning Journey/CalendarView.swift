@@ -17,29 +17,34 @@ struct CalendarView: View {
     private let calendar = Calendar.current
     
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                Rectangle()
-                    .frame(width: 365, height: 254)
-                    .foregroundStyle(Color.black01)
-                    .cornerRadius(13)
-                    .padding(.vertical)
-                headerView
-                
-                if showMonthYearPicker {
-                    MonthYearPicker(currentDate: $currentDate)
-                        .padding(.top, 40)
-                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
-                } else {
-                    weeklyGridView
-                        .padding(.horizontal)
-                        .transition(.opacity.combined(with: .scale(scale: 1.0)))
+        
+            VStack(spacing: 0) {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 365, height: 254)
+                        .foregroundStyle(Color.black01)
+                        .cornerRadius(13)
+                        .padding(.vertical)
+                    
+                    headerView
+                    
+                    if showMonthYearPicker {
+                        MonthYearPicker(currentDate: $currentDate)
+                            .padding(.top, 40)
+                        
+                            .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                    } else {
+                        weeklyGridView
+                            .padding(.horizontal)
+                            .transition(.opacity.combined(with: .scale(scale: 1.0)))
+                    }
+                    
+                    Spacer()
                 }
                 
-                Spacer()
             }
         }
-    }
+ 
     
     struct MonthYearPicker: View {
         @Binding var currentDate: Date
@@ -86,6 +91,7 @@ struct CalendarView: View {
             .onChange(of: selectedMonth) { updateDate() }
             .onChange(of: selectedYear) { updateDate() }
         }
+        
         
         func updateDate() {
             var components = calendar.dateComponents([.day, .hour, .minute], from: currentDate)
@@ -152,16 +158,18 @@ struct CalendarView: View {
     
     
     private var weeklyGridView: some View {
-        VStack(spacing: -1) {
+        VStack(spacing: 5) {
              HStack {
                 ForEach(weekDays, id: \.self) { day in
                     Text(day)
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.black02)
                         .frame(width: 44, height: 44)
+                        .padding(.horizontal, -2)
                 }
             }
-            .padding(.vertical, -20)
+            .padding(.vertical, -30)
+            
             
              HStack(spacing: 17) {
                 ForEach(getCurrentWeekRealDays(), id: \.self) { dayInfo in
@@ -174,7 +182,7 @@ struct CalendarView: View {
                             .font(.system(size: 24, weight: .medium))
                             .foregroundColor(getTextColor(for: dayInfo))
                     }
-                    .padding(.horizontal, -7)
+                    .padding(.horizontal, -6)
                 }
             }
         }

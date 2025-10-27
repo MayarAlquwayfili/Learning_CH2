@@ -17,13 +17,15 @@ struct FullCalendarView: View {
                             Image(systemName: "chevron.left")
                                 .foregroundStyle(Color.white)
                         }
+                        
                     }
+                    
                 }
-               .ignoresSafeArea(edges: .bottom)
+                .ignoresSafeArea(edges: .bottom)
         }
-     }
+    }
 }
- 
+
 
 struct FSCalendarViewRepresentable: UIViewRepresentable {
     
@@ -37,33 +39,30 @@ struct FSCalendarViewRepresentable: UIViewRepresentable {
          
         calendar.allowsSelection = false
         calendar.pagingEnabled = false
-        calendar.rowHeight = 44
- 
-        calendar.scope = .month
-        
         calendar.scrollDirection = .vertical
-         
+
+        calendar.scope = .month
+ 
         calendar.appearance.headerTitleFont = .systemFont(ofSize: 17, weight: .semibold)
         calendar.appearance.headerTitleColor = .white
         calendar.appearance.headerTitleAlignment = .left
-        calendar.appearance.headerSeparatorColor = .black02
-         
+        calendar.appearance.headerTitleOffset = CGPoint(x: 20, y: 0)
+        calendar.appearance.headerSeparatorColor = UIColor.clear
         calendar.appearance.titleDefaultColor = .white
         calendar.appearance.titleWeekendColor = .white
  
-        let placeholderColor = UIColor(named: "black02") ?? .gray
-        calendar.appearance.titlePlaceholderColor = placeholderColor.withAlphaComponent(0.5)
-        
-         calendar.appearance.titleTodayColor = .white
-         calendar.appearance.todayColor = UIColor(named: "orgMain") ?? .orange
-         calendar.appearance.selectionColor = .clear
+        calendar.appearance.titleTodayColor = .white
+        calendar.appearance.todayColor = UIColor(named: "orgMain") ?? .orgMain
          
  
-         calendar.appearance.titleFont = .systemFont(ofSize: 24, weight: .medium)
-         calendar.appearance.weekdayFont = .systemFont(ofSize: 13, weight: .semibold)
-         calendar.appearance.weekdayTextColor = UIColor(named: "black02") ?? .white
+        calendar.appearance.titleFont = .systemFont(ofSize: 24, weight: .medium)
+        calendar.rowHeight = 44
+        calendar.appearance.weekdayFont = .systemFont(ofSize: 13, weight: .semibold)
+        calendar.appearance.weekdayTextColor = UIColor(named: "black02") ?? .black02
+ 
+        calendar.appearance.selectionColor = .clear
+        calendar.placeholderType = .none
 
-         
         return calendar
     }
     
@@ -92,30 +91,29 @@ struct FSCalendarViewRepresentable: UIViewRepresentable {
                     
                     switch state {
                     case .learned:
-                        return UIColor(named: "brownn") ?? .brown
+                        return UIColor(named: "brownn") ?? .brownn
                     case .freezed:
-                        return UIColor(named: "darkBlue01") ?? .blue
+                        return UIColor(named: "darkBlue01") ?? .darkBlue01
                     case .default:
                         if Calendar.current.isDateInToday(date) {
-                            return UIColor(named: "orgMain") ?? .orange
+                            return UIColor(named: "orgMain") ?? .orgMain
                         }
                         return .clear
                     }
                 }
         
-         func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-                    
-                    let dayState = viewModel.getDayState(for: date)
-                     
-                     if calendar.scope == .month && !Calendar.current.isDate(date, equalTo: calendar.currentPage, toGranularity: .month) {
-                        let placeholderColor = UIColor(named: "black02") ?? .gray
-                        return placeholderColor.withAlphaComponent(0.5)
-                    }
-                      if dayState == .default {
-                        return .white
-                    }
-                      return dayState.textUIColor
+        func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+ 
+                if calendar.scope == .month && !Calendar.current.isDate(date, equalTo: calendar.currentPage, toGranularity: .month) {
+                    return .clear
                 }
+            
+                let dayState = viewModel.getDayState(for: date)
+                if dayState == .default {
+                     return .white
+                }
+                 return dayState.textUIColor
+            }
     }
 }
  

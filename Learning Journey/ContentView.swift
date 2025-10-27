@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
- 
+
             VStack {
                 ZStack {
                     
@@ -47,7 +47,7 @@ struct ContentView: View {
                         .font(.system(size: 22))
                         .foregroundStyle(Color.white)
                     
-                    TextField("Swift", text: $viewModel.learningGoal)
+                    TextField("Enter your goal", text: $viewModel.learningGoal)
                         .font(.system(size: 17))
                         .onSubmit {
                             print("learningGoal")
@@ -58,7 +58,7 @@ struct ContentView: View {
                         .foregroundColor(.gblack)
                     
                 }
-                .padding(.horizontal, 10)
+                .offset(x: 12)
                 .padding(.top, 37)
                 
                 
@@ -69,7 +69,8 @@ struct ContentView: View {
                         .font(.system(size: 22))
                         .foregroundStyle(Color.white)
                         .padding(.top, 37)
-                    
+                        .offset(x: 12)
+
                     HStack(spacing: 8) {
                         ForEach(StreakViewModel.LearningDuration.allCases, id: \.self) { duration in
                             DurationButton(
@@ -78,33 +79,37 @@ struct ContentView: View {
                             ) {
                                 viewModel.selectedDuration = duration
                             }
+                            
                         }
                         
                         Spacer()
                     }
                     
+                    .offset(x: 12)
+
                     
                     
-                    Button(action:{
-                        
-                        viewModel.saveDataPublic()
+                     Button(action:{
+                         viewModel.saveDataPublic()
                         showCurrentDayView = true
-                        
-                    }) {
+                     }) {
+                         
                         Text("Start learning")
                             .font(.system(size: 17, weight: .medium))
                             .foregroundColor(.white)
                             .frame(width: 182, height: 48)
                         
+                         
                     }
-                    .buttonStyle(.glassProminent) 
-                    .tint(.orgMain)
-                    .glassEffect(.clear)
+                    .buttonStyle(.glassProminent)
                     .frame(maxWidth: .infinity)
                     .padding(.bottom,56)
                     .padding(.top,223)
+                    .offset(x: 0)
+                    
                 }
-                .padding(.horizontal)
+                
+
             }
         }
         

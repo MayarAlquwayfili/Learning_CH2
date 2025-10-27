@@ -19,7 +19,8 @@ enum DayState: String, Codable {
     case learned
     case freezed
     
-  
+    
+    //Full
     var circleSwiftUIColor: Color {
         switch self {
         case .learned: return .brownn
@@ -30,17 +31,18 @@ enum DayState: String, Codable {
      
     var circleUIColor: UIColor {
         switch self {
-        case .learned: return UIColor(named: "brownn") ?? .brown
+        case .learned: return UIColor(named: "Brownn") ?? .brown
         case .freezed: return UIColor(named: "DarkBlue01") ?? .blue
         case .default: return .clear
         }
     }
     
     
+    //Mini
     var textSwiftUIColor: Color {
         switch self {
         case .learned: return .orgMain
-        case .freezed: return .bluee  
+        case .freezed: return .bluee
         case .default: return .white
         }
     }
@@ -48,7 +50,7 @@ enum DayState: String, Codable {
      var textUIColor: UIColor {
         switch self {
         case .learned: return UIColor(named: "orgMain") ?? .orange
-        case .freezed: return UIColor(named: "bluee") ?? .blue
+        case .freezed: return UIColor(named: "bluee") ?? .bluee
         case .default: return .white
         }
     }

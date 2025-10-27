@@ -263,13 +263,12 @@ class StreakViewModel: ObservableObject {
 // CalendarView
 
 extension StreakViewModel {
- 
-        func getDayState(for date: Date) -> DayState {
+         func getDayState(for date: Date) -> DayState {
              if let day = streakData.history.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
                  return day.state
             }
               return .default
-        }
+    }
     
     func markDayAsLearned(date: Date) {
         let calendar = Calendar.current

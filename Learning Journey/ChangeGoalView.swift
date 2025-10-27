@@ -37,6 +37,7 @@ struct ChangeGoalView: View {
                     .frame(width:361 ,height: 1)
                     .foregroundColor(.gblack)
                 
+                
             }
             .padding(.horizontal, 10)
             .padding(.top, 37)
