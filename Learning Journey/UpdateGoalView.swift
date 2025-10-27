@@ -23,7 +23,6 @@ struct UpdateGoalView: View {
     var body: some View {
             NavigationStack {
                 ZStack {
-                    Color.black.ignoresSafeArea()  // Remove this !!!!
                     
                     VStack(spacing: 40) {
                         

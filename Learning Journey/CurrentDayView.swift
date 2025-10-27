@@ -31,6 +31,7 @@ struct CurrentDayView: View {
                         .transition(.opacity)
                 } else if showMonthYearPicker {
                     Spacer()
+                        .frame(height: 100)
                 }
                 
                 if isGoalCompleted {
@@ -41,12 +42,10 @@ struct CurrentDayView: View {
                             isGoalCompleted = false
                         }
                     )
-                    Spacer().frame(height: 50)
-                } else {
+                 } else {
                     LearneButtonView
                         .transition(.opacity)
                 }
-                
             }
         }
         .fullScreenCover(isPresented: $showFullCalendar) {
@@ -56,6 +55,10 @@ struct CurrentDayView: View {
         .animation(.easeInOut, value: isGoalCompleted)
         .sheet(isPresented: $showUpdateGoalSheet) {
             UpdateGoalView(viewModel: viewModel)
+            
+        .onReceive(viewModel.$goalAchieved) { achieved in
+            self.isGoalCompleted = achieved
+        }
         }
         .onAppear {
         }
@@ -237,4 +240,4 @@ struct CurrentDayView: View {
     CalendarView(
             viewModel: StreakViewModel(),
             showMonthYearPicker: .constant(false))
-}
+  }

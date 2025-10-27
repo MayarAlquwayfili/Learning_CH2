@@ -28,12 +28,12 @@ struct GoalCompletedView: View {
             
             Text("Goal completed! start learning again or set new learning goal")
                 .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(.white)
+                .foregroundStyle(.black02)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
-            
-            Spacer()
-            
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+             
             Button (action:{
                 onSetNewGoal()
             }
@@ -49,10 +49,10 @@ struct GoalCompletedView: View {
             .buttonStyle(.glassProminent)
             .tint(.orgMain)
             .frame(maxWidth: .infinity)
-            .padding(.bottom,24)
+            .padding(.bottom, 10)
             .padding(.top,118)
             
-            
+
             Button(action: {
                 onRestartGoal()
             }) {

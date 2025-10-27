@@ -14,8 +14,7 @@ struct ChangeGoalView: View {
     
     var body: some View {
         
-        
-        VStack{
+         VStack{
             
             Text("Learning Goal")
                 .font(.system(size: 17, weight: .semibold))

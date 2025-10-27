@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 
 class StreakViewModel: ObservableObject {
+    @Published var goalAchieved = false
     @Published var streakData = StreakData(
         currentStreak: 0,
         totalLearnedDays: 0,
@@ -26,11 +27,11 @@ class StreakViewModel: ObservableObject {
     private let calendar = Calendar.current
     private let userDefaults = UserDefaults.standard
     
-    enum LearningDuration: String, CaseIterable {
+    enum LearningDuration: String, CaseIterable, Codable {
         case week = "Week"
         case month = "Month"
         case year = "Year"
-        
+
         var freezesAllowed: Int {
             switch self {
             case .week: return 2
@@ -38,7 +39,15 @@ class StreakViewModel: ObservableObject {
             case .year: return 96
             }
         }
-    }
+        
+        var targetDays: Int {
+            switch self {
+            case .week: return 7
+            case .month: return 30
+            case .year: return 365
+            }
+        }
+     }
     
     init() {
         loadData()
@@ -69,10 +78,17 @@ class StreakViewModel: ObservableObject {
             streakData.currentStreak += 1
             streakData.lastLearningDate = Date()
             
-            updateHistory(for: Date(), with: .learned)  
-            
+            updateHistory(for: Date(), with: .learned)
+        
+            if streakData.totalLearnedDays >= selectedDuration.targetDays {
+                goalAchieved = true
+            } else {
+                goalAchieved = false
+            }
+        
             saveData()
         }
+    
     
     func logAsFreezed() {
             guard canLogAsFreezed() else { return }
@@ -82,7 +98,7 @@ class StreakViewModel: ObservableObject {
             streakData.currentStreak += 1
             streakData.lastLearningDate = Date()
             
-            updateHistory(for: Date(), with: .freezed) // ⬅️ السطر المضاف
+            updateHistory(for: Date(), with: .freezed)  
             
             saveData()
         }
@@ -106,7 +122,9 @@ class StreakViewModel: ObservableObject {
     func updateLearningGoal(_ goal: String) {
         learningGoal = goal
         resetStreak()
+        goalAchieved = false
         saveData()
+        
     }
     
  
@@ -189,8 +207,7 @@ class StreakViewModel: ObservableObject {
         }
     
     private func updateTodayState() {
-            // تحقق مما إذا كان اليوم الحالي مسجلاً في التاريخ
-            self.todayState = getDayState(for: Date())
+             self.todayState = getDayState(for: Date())
         }
     
     private func saveData() {
@@ -222,7 +239,8 @@ class StreakViewModel: ObservableObject {
         func startNewGoalCycle() {
             streakData.currentStreak = 0
             streakData.totalLearnedDays = 0
-             streakData.lastLearningDate = nil
+            streakData.lastLearningDate = nil
+            goalAchieved = false
             updateTodayState()
             saveData()  
             print("Starting new goal cycle with same goal: \(learningGoal)")
