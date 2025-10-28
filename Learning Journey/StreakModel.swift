@@ -19,6 +19,11 @@ enum DayState: String, Codable {
     case learned
     case freezed
     
+    struct DayInfo: Hashable {
+        let day: String
+        let date: Date
+        let isToday: Bool
+    }
     
     //Full
     var circleSwiftUIColor: Color {

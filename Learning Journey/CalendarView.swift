@@ -17,33 +17,30 @@ struct CalendarView: View {
     private let calendar = Calendar.current
     
     var body: some View {
-        
-            VStack(spacing: 0) {
-                ZStack {
-                    Rectangle()
-                        .frame(width: 365, height: 254)
-                        .foregroundStyle(Color.black01)
-                        .cornerRadius(13)
-                        .padding(.vertical)
-                    
-                    headerView
-                    
-                    if showMonthYearPicker {
-                        MonthYearPicker(currentDate: $currentDate)
-                            .padding(.top, 40)
-                        
-                            .transition(.opacity.combined(with: .scale(scale: 0.95)))
-                    } else {
-                        weeklyGridView
-                            .padding(.horizontal)
-                            .transition(.opacity.combined(with: .scale(scale: 1.0)))
-                    }
-                    
-                    Spacer()
+        VStack(spacing: 0) {
+            ZStack {
+                Rectangle()
+                    .frame(width: 365, height: 254)
+                    .foregroundStyle(Color.black01)
+                    .cornerRadius(13)
+                    .padding(.vertical)
+                
+                headerView
+                
+                if showMonthYearPicker {
+                    MonthYearPicker(currentDate: $currentDate)
+                        .padding(.top, 40)
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                } else {
+                    weeklyGridView
+                        .padding(.horizontal)
+                        .transition(.opacity.combined(with: .scale(scale: 1.0)))
                 }
                 
+                Spacer()
             }
         }
+    }
  
     
     struct MonthYearPicker: View {
@@ -64,9 +61,9 @@ struct CalendarView: View {
             self._selectedYear = State(initialValue: components.year ?? 2025)
         }
         
+        
         var body: some View {
             HStack(spacing: 0) {
-
                 Picker("Month", selection: $selectedMonth) {
                     ForEach(1...12, id: \.self) { month in
                         Text(months[month - 1]).tag(month)
@@ -76,7 +73,6 @@ struct CalendarView: View {
                 .pickerStyle(.wheel)
                 .frame(width: 180)
  
-
                 Picker("Year", selection: $selectedYear) {
                     ForEach(years, id: \.self) { year in
                         Text(String(year)).tag(year)
@@ -108,7 +104,6 @@ struct CalendarView: View {
     
     
     //Header
-    
     private var headerView: some View {
             VStack(spacing: 16) {
                 HStack {
@@ -190,7 +185,6 @@ struct CalendarView: View {
     }
     
  
-    
     
     private func getCircleColor(for dayInfo: DayInfo) -> Color {
             let dayState = viewModel.getDayState(for: dayInfo.date)

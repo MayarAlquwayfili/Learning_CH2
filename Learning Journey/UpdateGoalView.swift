@@ -23,34 +23,32 @@ struct UpdateGoalView: View {
     var body: some View {
             NavigationStack {
                 ZStack {
-                    
                     VStack(spacing: 40) {
-                        
-                         VStack(alignment: .leading) {
+                        VStack(alignment: .leading) {
                             Text("I want to learn")
                                 .font(.system(size: 22))
                                 .foregroundStyle(Color.white)
-
-                             TextField("Enter your goal", text: $tempLearningGoal)
+                            
+                            TextField("Enter your goal", text: $tempLearningGoal)
                                 .font(.system(size: 17))
                                 .foregroundStyle(.white)
                                 .tint(.orgMain)
-
+                            
                             Rectangle()
                                 .frame(width: 380, height: 1)
                                 .foregroundColor(.black02)
                         }
-
-                         VStack(alignment: .leading) {
+                        
+                        VStack(alignment: .leading) {
                             Text("I want to learn it in a")
                                 .font(.system(size: 22))
                                 .foregroundStyle(Color.white)
-
+                            
                             HStack(spacing: 8) {
                                 ForEach(StreakViewModel.LearningDuration.allCases, id: \.self) { duration in
                                     DurationButton(
                                         title: duration.rawValue,
-                                         isSelected: tempSelectedDuration == duration
+                                        isSelected: tempSelectedDuration == duration
                                     ) {
                                         tempSelectedDuration = duration
                                     }
@@ -61,9 +59,9 @@ struct UpdateGoalView: View {
                         
                         Spacer()
                     }
-                    .padding(.horizontal, 20)
                     .padding(.top, 30)
-
+                    .padding(.leading, 20)
+ 
                      if showUpdateConfirmAlert {
                         Color.black.opacity(0.7).ignoresSafeArea()
                             .onTapGesture { showUpdateConfirmAlert = false }
@@ -84,6 +82,7 @@ struct UpdateGoalView: View {
                         .padding(.vertical)
                     }
                 }
+                
                 .navigationTitle("Learning Goal")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -110,6 +109,7 @@ struct UpdateGoalView: View {
                  }
                  .animation(.easeInOut, value: showUpdateConfirmAlert)
             }
+        
         }
 
      #Preview {

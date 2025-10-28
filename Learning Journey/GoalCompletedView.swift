@@ -14,7 +14,7 @@ struct GoalCompletedView: View {
     var body: some View {
         
         ZStack {
-                    Color.black.ignoresSafeArea()
+            Color.black.ignoresSafeArea()
             
             VStack(spacing: 16) {
             Spacer()
@@ -35,10 +35,8 @@ struct GoalCompletedView: View {
                 .fixedSize(horizontal: false, vertical: true)
              
             Button (action:{
-                onSetNewGoal()
-            }
-                    
-            ) {
+                onSetNewGoal() })
+                {
                 Text("Set new learning goal")
                     .font(.system(size: 17, weight: .medium))
                     .foregroundColor(.white)
@@ -54,8 +52,8 @@ struct GoalCompletedView: View {
             
 
             Button(action: {
-                onRestartGoal()
-            }) {
+                onRestartGoal()  })
+                {
                 Text("Set same learning goal and duration")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundStyle(.orgMain)

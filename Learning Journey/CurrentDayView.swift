@@ -64,10 +64,8 @@ struct CurrentDayView: View {
     
     
     //Header View
-    
-    var headerView: some View {
-        
-        HStack {
+     var headerView: some View {
+         HStack {
             Text("Activity")
                 .font(.system(size: 34, weight: .bold))
                 .foregroundStyle(.white)
@@ -76,10 +74,8 @@ struct CurrentDayView: View {
             
             HStack (spacing: 12){
                 Button (action:{
-                    showFullCalendar = true
-                }
-                        
-                ) {
+                    showFullCalendar = true })
+                {
                     ZStack{
                         Image(systemName: "calendar")
                             .font(.system(size: 24))
@@ -91,30 +87,22 @@ struct CurrentDayView: View {
                 .tint(.black03)
                 
                 Button (action:{
-                    showUpdateGoalSheet = true
-                }
-                        
-                ) {
+                    showUpdateGoalSheet = true })
+                {
                     Image(systemName: "pencil.and.outline")
                         .font(.system(size: 24))
                         .foregroundStyle(.grayy01)
                 }
                 .buttonStyle(.glassProminent)
                 .tint(.black03)
-                
-                
+                 
             }
-            
         }
-        
-        
     }
     
-    
-    
-    //Learning Swift View
-    
-    var LearningSwiftView: some View {
+ 
+    //Learning View
+     var LearningSwiftView: some View {
         VStack(spacing: 10) {
             
             Rectangle()
@@ -144,7 +132,8 @@ struct CurrentDayView: View {
                             .font(.system(size: 15, weight: .bold))
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("\(viewModel.streakData.totalLearnedDays)")                                .font(.system(size: 24, weight: .semibold))
+                            Text("\(viewModel.streakData.totalLearnedDays)")
+                                .font(.system(size: 24, weight: .semibold))
                                 .foregroundStyle(Color.white)
                             
                             Text(viewModel.daysLearnedText)
@@ -185,14 +174,15 @@ struct CurrentDayView: View {
         
     }
     
+    
+    //Log Buttons
     var LearneButtonView: some View {
         VStack (spacing: 30){
             
             // Log as Learned Button
             ZStack {
                 Button (action:{
-                    viewModel.logAsLearned()
-                })
+                    viewModel.logAsLearned() })
                 {
                     Text(viewModel.learnedButtonText)
                         .font(.system(size: 36, weight: .bold))
@@ -209,8 +199,7 @@ struct CurrentDayView: View {
             // Log as Freezed Button
             ZStack {
                 Button (action:{
-                    viewModel.logAsFreezed()
-                })
+                    viewModel.logAsFreezed() })
                 {
                     Text("Log as Freezed")
                         .font(.system(size: 17, weight: .medium))
@@ -222,7 +211,6 @@ struct CurrentDayView: View {
                 .tint(viewModel.freezedButtonColor)
                 .disabled(!viewModel.freezedButtonEnabled)
             }
-            
             Text(viewModel.freezeCounterText)
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(Color.black04)

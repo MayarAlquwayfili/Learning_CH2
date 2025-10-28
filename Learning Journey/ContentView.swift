@@ -12,16 +12,13 @@ struct ContentView: View {
     @State private var showCurrentDayView = false
     
     var body: some View {
-        ZStack {
-
+        ZStack { 
             VStack {
                 ZStack {
                     
                     Circle()
                         .fill(Color.brownn)
-                        .tint(Color.brownn)
                         .frame(width: 109, height: 109)
-                    
                         .glassEffect(.clear)
                     
                     Image(systemName: "flame.fill")
@@ -47,7 +44,7 @@ struct ContentView: View {
                         .font(.system(size: 22))
                         .foregroundStyle(Color.white)
                     
-                    TextField("Enter your goal", text: $viewModel.learningGoal)
+                    TextField("Enter your learning goal", text: $viewModel.learningGoal)
                         .font(.system(size: 17))
                         .onSubmit {
                             print("learningGoal")
@@ -60,10 +57,7 @@ struct ContentView: View {
                 }
                 .offset(x: 12)
                 .padding(.top, 37)
-                
-                
-                
-                
+                 
                 VStack(alignment: .leading) {
                     Text("I want to learn it in a")
                         .font(.system(size: 22))
@@ -75,31 +69,24 @@ struct ContentView: View {
                         ForEach(StreakViewModel.LearningDuration.allCases, id: \.self) { duration in
                             DurationButton(
                                 title: duration.rawValue,
-                                isSelected: viewModel.selectedDuration == duration
-                            ) {
-                                viewModel.selectedDuration = duration
-                            }
-                            
+                                isSelected: viewModel.selectedDuration == duration ) {
+                                    viewModel.selectedDuration = duration
+                                }
                         }
                         
                         Spacer()
                     }
-                    
                     .offset(x: 12)
-
-                    
                     
                      Button(action:{
                          viewModel.saveDataPublic()
-                        showCurrentDayView = true
-                     }) {
+                        showCurrentDayView = true })
+                    {
                          
                         Text("Start learning")
                             .font(.system(size: 17, weight: .medium))
                             .foregroundColor(.white)
                             .frame(width: 182, height: 48)
-                        
-                         
                     }
                     .buttonStyle(.glassProminent)
                     .frame(maxWidth: .infinity)
@@ -108,8 +95,6 @@ struct ContentView: View {
                     .offset(x: 0)
                     
                 }
-                
-
             }
         }
         

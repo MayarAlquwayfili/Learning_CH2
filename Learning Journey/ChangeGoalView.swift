@@ -13,14 +13,11 @@ struct ChangeGoalView: View {
     let durations = ["Week", "Month", "Year"]
     
     var body: some View {
-        
          VStack{
-            
             Text("Learning Goal")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(.white)
-            
-            
+             
             VStack(alignment: .leading) {
                 Text("I want to learn")
                     .font(.system(size: 22))
@@ -36,15 +33,12 @@ struct ChangeGoalView: View {
                 Rectangle()
                     .frame(width:361 ,height: 1)
                     .foregroundColor(.gblack)
-                
-                
+                 
             }
             .padding(.horizontal, 10)
             .padding(.top, 37)
             
-            
-            
-            
+ 
             VStack(alignment: .leading) {
                 Text("I want to learn it in a")
                     .font(.system(size: 22))
@@ -55,16 +49,13 @@ struct ChangeGoalView: View {
                     ForEach(durations, id: \.self) { duration in
                         DurationButton(
                             title: duration,
-                            isSelected: selectedDuration == duration
-                        ) {
+                            isSelected: selectedDuration == duration)
+                        {
                             selectedDuration = duration
                         }
                     }
                     Spacer()
                 }
-                
-                
-                
             }
         }
     }
